@@ -98,18 +98,6 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
                 currentB.insert(cell[getLastCellIndex(reg_index[i])]);
             }
         }
-
-        for (int x : currentA) {
-            cout << x << " ";
-        }
-        cout << '\n';
-        for (int x : currentB) {
-            cout << x << " ";
-        }
-        cout << '\n';
-        cout << "========\n";
-        
-
         currentA = currentB;
         currentB.clear();
     }
