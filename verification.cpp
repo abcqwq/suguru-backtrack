@@ -51,6 +51,9 @@ int main() {
             if (inside(r + dx[i], c + dy[i]))
                 all_valid &= (config[r][c] != config[r+dx[i]][c+dy[i]]);
         all_valid &= B[arr[r][c].first][config[r][c]] == 1;
+        all_valid &= 1 <= config[r][c] && config[r][c] <= region_size[arr[r][c].first];
+        if (arr[r][c].second != 0)
+            all_valid &= config[r][c] == arr[r][c].second;
         return all_valid;
     };
 
@@ -63,53 +66,15 @@ int main() {
     };
 
     for (int i = 0; i < N; i++)
-        for (int j = 0; j < M; j++) 
-            if (arr[i][j].second != 0)
-                config[i][j] = arr[i][j].second;
-
-    bool found = false;
-    function<void(int)> search = [&](int num) {
-
-        if (num >= N*M) {
-            found = verifier();
-            return;
+        for (int j = 0; j < M; j++) {
+            cin >> config[i][j];
+            if (arr[i][j].second == 0)
+                B[arr[i][j].first][config[i][j]]++;
         }
 
-        int er = num / M;
-        int ce = num % M;
-
-        if (arr[er][ce].second != 0) {
-            search(num+1);
-        } else {
-            for (int s = 1; s <= region_size[arr[er][ce].first]; s++) {
-                config[er][ce] = s;
-                B[arr[er][ce].first][s]++;
-
-                if (is_valid_cell(er, ce)) {
-                    search(num+1);
-                }
-
-                if (found)
-                    return;
-
-                B[arr[er][ce].first][s]--;
-                config[er][ce] = -1;
-            }
-        }
-    };
-
-    search(0);
-
-    if (found) {
-        cout << "Found!\n";
-        for (int i = 0; i < N; i++)
-            for (int j = 0; j < M; j++) {
-                SetConsoleTextAttribute(hConsole, arr[i][j].first + 1);
-                cout << config[i][j] << " \n"[j == M-1];
-            }
+    if (verifier()) {
+        cout << "The configuration is indeed a solution!\n";
     } else {
-        cout << "No solution found for this Suguru instance.\n";
+        cout << "The configuration isn't a solution...\n";
     }
-
-
 }
