@@ -113,14 +113,6 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
     }
 
 
-    // for (int i = 1; i <= reg_cnt; i++) {
-    //     cout << "Pilihan untuk cell paling kanan di region ke-" << i << ":\n";
-    //     for (int j : final_choices[i]) {
-    //         cout << j << " ";
-    //     }
-    //     cout << "\n========\n";
-    // }
-
 
     for (int i = reg_cnt; i >= 1; i--) {
 
