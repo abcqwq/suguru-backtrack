@@ -9,6 +9,10 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
     bool ok = true;
     for (int i = 2; i <= N; i++)
         ok &= cell[i] == 0 || cell[i-1] == 0 || (cell[i] != cell[i-1]);
+
+    int final_cell[N + 1], orig_cell[N + 1];
+    for (int i = 1; i <= N; i++)
+        final_cell[i] = cell[i], orig_cell[i] = cell[i];
     
     if (!ok) {
         return false;
@@ -28,6 +32,8 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
 
     vector<set<int>> init_choices(reg_cnt + 1);
     //init_choices[i] is a set of number that can be used to fill a cell in i-th region initially
+
+    vector<set<int>> final_choices(reg_cnt + 1);
 
     for (int i = 1; i <= reg_cnt; i++)
         for (int j = 1; j <= reg_size[i]; j++)
@@ -55,10 +61,13 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
         currentA.insert(cell[getLastCellIndex(reg_index[1])]);
     }
 
+
+    final_choices[1] = currentA;
+
     for (int i = 2; i <= reg_cnt; i++) {
 
         if ((int)init_choices[i].size() == 1) {
-            for (int j = getFirstCellIndex(reg_index[i]); j <= getFirstCellIndex(reg_index[i]); j++) {
+            for (int j = getFirstCellIndex(reg_index[i]); j <= getLastCellIndex(reg_index[i]); j++) {
                 if (cell[j] == 0) {
                     cell[j] = *init_choices[i].begin();
                     break;
@@ -73,7 +82,7 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
 
             if ((int)init_choices[i].size() == 2) {
                 int fi = *init_choices[i].begin();
-                int se = *init_choices[i].end();
+                int se = *init_choices[i].rbegin();
 
                 if (cell[getFirstCellIndex(reg_index[i])] == 0) {
                     if (*currentA.begin() == fi && cell[getLastCellIndex(reg_index[i])] == 0)
@@ -99,15 +108,65 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
             }
         }
         currentA = currentB;
+        final_choices[i] = currentB;
         currentB.clear();
     }
+
+
+    // for (int i = 1; i <= reg_cnt; i++) {
+    //     cout << "Pilihan untuk cell paling kanan di region ke-" << i << ":\n";
+    //     for (int j : final_choices[i]) {
+    //         cout << j << " ";
+    //     }
+    //     cout << "\n========\n";
+    // }
+
+
+    for (int i = reg_cnt; i >= 1; i--) {
+
+        if (i > 1 && (int)final_choices[i-1].size() == 1 && final_cell[getFirstCellIndex(reg_index[i])] == 0) {
+
+            for (int j : init_choices[i]) {
+                if (j != *final_choices[i-1].begin()) {
+                    final_cell[getFirstCellIndex(reg_index[i])] = j;
+                    init_choices[i].erase(j);
+                    final_choices[i].erase(j);
+                    break;
+                }
+            }
+
+        }
+
+        if (final_cell[getLastCellIndex(reg_index[i])] == 0) {
+            final_cell[getLastCellIndex(reg_index[i])] = *final_choices[i].begin();
+            init_choices[i].erase(final_cell[getLastCellIndex(reg_index[i])]);
+        }
+
+        for (int j = getFirstCellIndex(reg_index[i]); j <= getLastCellIndex(reg_index[i]); j++) {
+            if (final_cell[j] == 0) {
+                final_cell[j] = *init_choices[i].begin();
+                init_choices[i].erase(init_choices[i].begin());
+            }
+        }
+
+        if (i > 1)
+            final_choices[i-1].erase(final_cell[getFirstCellIndex(reg_index[i])]);
+    }
+
+    HANDLE  hConsole;
+    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    for (int i = 1; i <= N; i++) {
+        int regionNumber = reg[i];
+        SetConsoleTextAttribute(hConsole, regionNumber + 7);
+        cout << (orig_cell[i] != 0 ? "[" : "") << final_cell[i] << (orig_cell[i] != 0 ? "]" : "") << " \n"[i == N];
+    }
+
+
 
     return true;
 }
 
 int main() {
-    HANDLE  hConsole;	
-    hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 
     int M, N; cin >> M >> N;
     assert(M == 1);
