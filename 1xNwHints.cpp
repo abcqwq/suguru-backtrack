@@ -10,9 +10,9 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
     for (int i = 2; i <= N; i++)
         ok &= cell[i] == 0 || cell[i-1] == 0 || (cell[i] != cell[i-1]);
 
-    int final_cell[N + 1], orig_cell[N + 1];
+    int cell_final[N + 1], orig_cell[N + 1];
     for (int i = 1; i <= N; i++)
-        final_cell[i] = cell[i], orig_cell[i] = cell[i];
+        cell_final[i] = cell[i], orig_cell[i] = cell[i];
     
     if (!ok) {
         return false;
@@ -116,11 +116,11 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
 
     for (int i = reg_cnt; i >= 1; i--) {
 
-        if (i > 1 && (int)final_choices[i-1].size() == 1 && final_cell[getFirstCellIndex(reg_index[i])] == 0) {
+        if (i > 1 && (int)final_choices[i-1].size() == 1 && cell_final[getFirstCellIndex(reg_index[i])] == 0) {
 
             for (int j : init_choices[i]) {
                 if (j != *final_choices[i-1].begin()) {
-                    final_cell[getFirstCellIndex(reg_index[i])] = j;
+                    cell_final[getFirstCellIndex(reg_index[i])] = j;
                     init_choices[i].erase(j);
                     final_choices[i].erase(j);
                     break;
@@ -129,20 +129,20 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
 
         }
 
-        if (final_cell[getLastCellIndex(reg_index[i])] == 0) {
-            final_cell[getLastCellIndex(reg_index[i])] = *final_choices[i].begin();
-            init_choices[i].erase(final_cell[getLastCellIndex(reg_index[i])]);
+        if (cell_final[getLastCellIndex(reg_index[i])] == 0) {
+            cell_final[getLastCellIndex(reg_index[i])] = *final_choices[i].begin();
+            init_choices[i].erase(cell_final[getLastCellIndex(reg_index[i])]);
         }
 
         for (int j = getFirstCellIndex(reg_index[i]); j <= getLastCellIndex(reg_index[i]); j++) {
-            if (final_cell[j] == 0) {
-                final_cell[j] = *init_choices[i].begin();
+            if (cell_final[j] == 0) {
+                cell_final[j] = *init_choices[i].begin();
                 init_choices[i].erase(init_choices[i].begin());
             }
         }
 
         if (i > 1)
-            final_choices[i-1].erase(final_cell[getFirstCellIndex(reg_index[i])]);
+            final_choices[i-1].erase(cell_final[getFirstCellIndex(reg_index[i])]);
     }
 
     HANDLE  hConsole;
@@ -150,7 +150,7 @@ bool algorithm(int M, int N, int cell[], int reg[]) {
     for (int i = 1; i <= N; i++) {
         int regionNumber = reg[i];
         SetConsoleTextAttribute(hConsole, regionNumber + 7);
-        cout << (orig_cell[i] != 0 ? "[" : "") << final_cell[i] << (orig_cell[i] != 0 ? "]" : "") << " \n"[i == N];
+        cout << (orig_cell[i] != 0 ? "[" : "") << cell_final[i] << (orig_cell[i] != 0 ? "]" : "") << " \n"[i == N];
     }
 
 
