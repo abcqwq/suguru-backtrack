@@ -11,20 +11,28 @@ def reformat_tc(file_name):
 def reformat_sol(file_name):
     os.rename(file_name, file_name.replace('txt', 'ans'))
 
+def reformat_name(file_name):
+    if '_tc' in file_name:
+        os.rename(file_name, file_name.replace('_tc', ''))
+    if '_sol' in file_name:
+        os.rename(file_name, file_name.replace('_sol', ''))
+
 path = '.'
 tc_files_to_replace = [f for f in os.listdir(path) if 'tc' in f]
 sol_files_to_replace = [f for f in os.listdir(path) if 'sol' in f]
 
 for f in tc_files_to_replace:
     full_path = os.path.join(os.getcwd(), f)
-    print(f'Found {f}, replacing...')
+    print(f'Found {f}, reformating...')
     if os.path.isfile(full_path): print('aman')
-    reformat_tc(full_path)
+    # reformat_tc(full_path)
+    reformat_name(full_path)
 
 for f in sol_files_to_replace:
     full_path = os.path.join(os.getcwd(), f)
-    print(f'Found {f}, replacing...')
+    print(f'Found {f}, reformating...')
     if os.path.isfile(full_path): print('aman')
-    reformat_sol(full_path)
+    # reformat_sol(full_path)
+    reformat_name(full_path)
 
 print('Done')
