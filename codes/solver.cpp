@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
-#include <windows.h>
 using namespace std;
 
 int m, n;
