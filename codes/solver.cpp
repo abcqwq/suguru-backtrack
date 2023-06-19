@@ -1,11 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <chrono>
+#include <set>
 using namespace std;
 
 int m, n;
 vector<vector<pair<int,int>>> G, C;
 vector<vector<int>> CV;
+vector<set<int>> chi;
 vector<int> s;
 
 vector<int> dx = {1, -1, 0, 0, 1, 1, -1, -1};
@@ -53,7 +55,7 @@ void search(int i, int j) {
             auto [i_, j_] = nextCell(i, j);
             search(i_, j_);
         } else {
-            for (int beta = 1; beta <= s[r]; beta++) {
+            for (int beta : chi[r]) {
                 G[i][j] = pair<int,int>(beta, r);
                 CV[r][beta]++;
 
@@ -109,6 +111,12 @@ void readInput() {
                 int alpha = G[i][j].second, beta = G[i][j].first;
                 CV[alpha][beta]++;
             }
+    
+    chi.resize(R+1);
+    for (int r = 1; r <= R; r++)
+        for (int beta = 1; beta <= s[r]; beta++)
+            if (CV[r][beta] == 0)
+                chi[r].insert(beta);
 }
 
 int main() {
