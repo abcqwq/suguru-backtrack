@@ -21,7 +21,7 @@ To use the Suguru puzzle solver and verifier, follow these straightforward steps
 
 1. Compile the `solver.cpp` and `verifier.cpp` files using a C++ compiler of your choice.
 2. Execute the resulting executable file.
-3. To use the solver, input the Suguru puzzle according to the format described in the "Input/Output Format" section.
+3. To use the solver, input the Suguru puzzle according to the format described in the [Input/Output Format](#inputoutput-format) section.
 4. To use the verifier, input the Suguru puzzle and its corresponding solution following the format specified in the [Input/Output Format](#inputoutput-format) section.
 
 ## Input/Output Format
