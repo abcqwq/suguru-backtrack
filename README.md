@@ -12,7 +12,7 @@ Within this repository, you will find the following components:
 
 * **Suguru Puzzle Solver**: Implemented in C++ using a backtracking algorithm, the source code can be found in the `codes/solver.cpp` file.
 * **Suguru Puzzle Solution Verifier**: Designed to validate the correctness of Suguru puzzle solutions, the source code is located in `codes/verifier.cpp`.
-* **Test Cases**: The repository provides a set of 180 test cases in plain text format for Suguru puzzles, obtained from [Janko](https://www.janko.at/Raetsel/Juosan/index.htm). These test cases are stored in the `test_cases` directory.
+* **Test Cases**: The repository provides a set of 180 test cases in plain text format for Suguru puzzles, obtained from [Janko](https://www.janko.at/Raetsel/Suguru/index.htm). These test cases are stored in the `test_cases` directory.
 * **Experimental Data**: The repository includes experimental datas that pertain to the runtime performance of the backtracking solver and verifier. These datas can be found in the `experimental_result` directory.
 
 ## How to Use
